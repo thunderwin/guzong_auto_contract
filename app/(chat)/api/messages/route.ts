@@ -1,43 +1,25 @@
-import { auth } from "@/app/(auth)/auth";
-import { getChatById, getMessagesByChatId } from "@/lib/db/queries";
-import { convertToUIMessages } from "@/lib/utils";
+import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const chatId = searchParams.get("chatId");
+const payload = {
+  error: "该接口已下线，请使用 /api/contract/* 接口。",
+};
 
-  if (!chatId) {
-    return Response.json({ error: "chatId required" }, { status: 400 });
-  }
+export async function GET() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  const [session, chat, messages] = await Promise.all([
-    auth(),
-    getChatById({ id: chatId }),
-    getMessagesByChatId({ id: chatId }),
-  ]);
+export async function POST() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  if (!chat) {
-    return Response.json({
-      messages: [],
-      visibility: "private",
-      userId: null,
-      isReadonly: false,
-    });
-  }
+export async function PUT() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  if (
-    chat.visibility === "private" &&
-    (!session?.user || session.user.id !== chat.userId)
-  ) {
-    return Response.json({ error: "forbidden" }, { status: 403 });
-  }
+export async function PATCH() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  const isReadonly = !session?.user || session.user.id !== chat.userId;
-
-  return Response.json({
-    messages: convertToUIMessages(messages),
-    visibility: chat.visibility,
-    userId: chat.userId,
-    isReadonly,
-  });
+export async function DELETE() {
+  return NextResponse.json(payload, { status: 410 });
 }

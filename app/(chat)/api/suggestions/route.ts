@@ -1,37 +1,25 @@
-import { auth } from "@/app/(auth)/auth";
-import { getSuggestionsByDocumentId } from "@/lib/db/queries";
-import { ChatbotError } from "@/lib/errors";
+import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const documentId = searchParams.get("documentId");
+const payload = {
+  error: "该接口已下线，请使用 /api/contract/* 接口。",
+};
 
-  if (!documentId) {
-    return new ChatbotError(
-      "bad_request:api",
-      "Parameter documentId is required."
-    ).toResponse();
-  }
+export async function GET() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  const session = await auth();
+export async function POST() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  if (!session?.user) {
-    return new ChatbotError("unauthorized:suggestions").toResponse();
-  }
+export async function PUT() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  const suggestions = await getSuggestionsByDocumentId({
-    documentId,
-  });
+export async function PATCH() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  const [suggestion] = suggestions;
-
-  if (!suggestion) {
-    return Response.json([], { status: 200 });
-  }
-
-  if (suggestion.userId !== session.user.id) {
-    return new ChatbotError("forbidden:api").toResponse();
-  }
-
-  return Response.json(suggestions, { status: 200 });
+export async function DELETE() {
+  return NextResponse.json(payload, { status: 410 });
 }

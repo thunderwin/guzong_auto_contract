@@ -1,3 +1,5 @@
+import { ContractWorkbench } from "@/components/contract/workbench";
+
 export default function Page() {
-  return null;
+  return <ContractWorkbench />;
 }

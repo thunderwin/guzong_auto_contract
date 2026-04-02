@@ -1,20 +1,25 @@
-import { getAllGatewayModels, getCapabilities, isDemo } from "@/lib/ai/models";
+import { NextResponse } from "next/server";
+
+const payload = {
+  error: "该接口已下线，请使用 /api/contract/* 接口。",
+};
 
 export async function GET() {
-  const headers = {
-    "Cache-Control": "public, max-age=86400, s-maxage=86400",
-  };
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  const curatedCapabilities = await getCapabilities();
+export async function POST() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  if (isDemo) {
-    const models = await getAllGatewayModels();
-    const capabilities = Object.fromEntries(
-      models.map((m) => [m.id, curatedCapabilities[m.id] ?? m.capabilities])
-    );
+export async function PUT() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-    return Response.json({ capabilities, models }, { headers });
-  }
+export async function PATCH() {
+  return NextResponse.json(payload, { status: 410 });
+}
 
-  return Response.json(curatedCapabilities, { headers });
+export async function DELETE() {
+  return NextResponse.json(payload, { status: 410 });
 }
